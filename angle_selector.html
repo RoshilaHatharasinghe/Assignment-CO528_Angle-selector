@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angle Selector</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input[type="number"], input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .radio-buttons {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .radio-buttons label {
+            display: block;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+        .radio-buttons input[type="radio"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="number" id="valueInput" value="0" min="0" max="360">
+        <br>
+        <input type="range" id="slider" min="0" max="360" value="180">
+        <div class="radio-buttons">
+            <label><input type="radio" name="commonValue" value="0"> 0</label>
+            <label><input type="radio" name="commonValue" value="45"> 45</label>
+            <label><input type="radio" name="commonValue" value="60"> 60</label>
+            <label><input type="radio" name="commonValue" value="90"> 90</label>
+            <label><input type="radio" name="commonValue" value="180"> 180</label>
+        </div>
+    </div>
+
+    <script>
+        const valueInput = document.getElementById('valueInput');
+        const slider = document.getElementById('slider');
+        const radioButtons = document.querySelectorAll('input[name="commonValue"]');
+
+        function syncElements(value) {
+            value = Math.min(Math.max(value, 0), 360);
+            valueInput.value = value;
+            slider.value = value;
+            radioButtons.forEach(button => {
+                button.checked = button.value == value;
+            });
+        }
+
+        valueInput.addEventListener('input', () => {
+            syncElements(Number(valueInput.value));
+        });
+
+        slider.addEventListener('input', () => {
+            syncElements(Number(slider.value));
+        });
+
+        radioButtons.forEach(button => {
+            button.addEventListener('change', () => {
+                if (button.checked) {
+                    syncElements(Number(button.value));
+                }
+            });
+        });
+
+        // Initialize elements to ensure they are in sync
+        syncElements(0);
+    </script>
+</body>
+</html>
